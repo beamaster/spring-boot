@@ -6,8 +6,8 @@
 + 第一个web应用
 
 ## lesson2
-+ maven repository--阿里镜像仓库配置
-第一步:修改maven根目录下的conf文件夹中的setting.xml文件，内容如下：
+### maven repository--阿里镜像仓库配置
+- 第一步:修改maven根目录下的conf文件夹中的setting.xml文件，内容如下：
 ```xml
 <mirrors>
     <mirror>
@@ -18,7 +18,7 @@
     </mirror>
   </mirrors>
 ```
-第二步: pom.xml文件里添加`repositories`配置
+- 第二步: pom.xml文件里添加`repositories`配置
 ```xml
 <repositories>  
         <repository>  
@@ -34,11 +34,12 @@
         </repository>  
 </repositories>  
 ```
-+ 多数据源配置
+### 多数据源配置
 - 1.在application.properties配置
 - 2.在启动程序配置
 
-+ 配置文件加密--[jasypt方案](https://github.com/ulisesbocchio/jasypt-spring-boot)
+### 配置文件加密
+> [jasypt方案](https://github.com/ulisesbocchio/jasypt-spring-boot)
 
 1.maven依赖
 ```xml
@@ -49,8 +50,8 @@
 </dependency>
 ```
 2.`application.properties` 增加配置
-```xml
-
+```
+jasypt.encryptor.password=encrypt-code
 ```
 
 3.调用JAVA API 生成密文
