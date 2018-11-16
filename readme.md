@@ -19,3 +19,21 @@
   </mirrors>
 ```
 第二步: pom.xml文件里添加`repositories`配置
+```xml
+<repositories>  
+        <repository>  
+            <id>alimaven</id>  
+            <name>aliyun maven</name>  
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>  
+            <releases>  
+                <enabled>true</enabled>  
+            </releases>  
+            <snapshots>  
+                <enabled>false</enabled>  
+            </snapshots>  
+        </repository>  
+</repositories>  
+```
++ 多数据源配置
+- 1.在application.properties配置
+- 2.在启动程序配置
