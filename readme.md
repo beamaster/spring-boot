@@ -37,3 +37,62 @@
 + 多数据源配置
 - 1.在application.properties配置
 - 2.在启动程序配置
+
++ 配置文件加密--[jasypt方案](https://github.com/ulisesbocchio/jasypt-spring-boot)
+
+1.maven依赖
+```xml
+<dependency>
+    <groupId>com.github.ulisesbocchio</groupId>
+    <artifactId>jasypt-spring-boot-starter</artifactId>
+    <version>1.16</version>
+</dependency>
+```
+2.`application.properties` 增加配置
+```xml
+
+```
+
+3.调用JAVA API 生成密文
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = PigAdminApplication.class)
+public class PigAdminApplicationTest {
+    @Autowired
+    private StringEncryptor stringEncryptor;
+
+    @Test
+    public void testEnvironmentProperties() {
+        System.out.println(stringEncryptor.encrypt("lengleng"));
+    }
+
+}
+```
+
+4.配置文件中使用密文
+```
+spring.datasource.jdbcUrl=ENC(加密的url)
+spring.datasource.username=ENC(加密的username)
+spring.datasource.password=ENC(加密的password)
+```
+
+5.安全防范
+- a.调用API生成的密钥中真实的username，password和jdbcUrl不能在生成代码中泄露
+- b.配置文件中的`jasypt.encryptor.password`密钥不能直接放在`application.properties`中，**要在项目启动时命令中添加**
+```jshelllanguage
+java -jar -Djasypt.encryptor.password=encrypt-code projectName-0.0.1-SNAPSHOT.war
+```
+6.延伸--其他非对称等高级配置参考
+
+| Key        | Required   |  Content  |
+| --------   | -----:  | :----:  |
+| jasypt.encryptor.password  | True |   根密码     |
+| jasypt.encryptor.algorithm |   False   | PBEWithMD5AndDES |
+| jasypt.encryptor.keyObtentionIterations| False |  1000  |
+| jasypt.encryptor.poolSize  |    False   |  1  |
+| jasypt.encryptor.providerName | False  |  SunJCE |
+| jasypt.encryptor.saltGeneratorClassname| False |  org.jasypt.salt.RandomSaltGenerator  |
+| jasypt.encryptor.stringOutputType | False |  base64  |
+| jasypt.encryptor.proxyPropertySources | False |  false  |
+
+
