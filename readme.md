@@ -96,4 +96,36 @@ java -jar -Djasypt.encryptor.password=encrypt-code projectName-0.0.1-SNAPSHOT.wa
 | jasypt.encryptor.stringOutputType | False |  base64  |
 | jasypt.encryptor.proxyPropertySources | False |  false  |
 
+### c3p0配置数据库连接
+1. `application.properties` 添加配置
+```
+c3p0.jdbcUrl=jdbc:mysql://127.0.0.1:3307/shopxx?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
+c3p0.user=root
+c3p0.password=root
+c3p0.driverClass=com.mysql.jdbc.Driver
+```
 
+2.`pom.xml`添加依赖
+```xml
+        <dependency>
+            <groupId>c3p0</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.1.2</version>
+        </dependency>
+```
+
+3.spring-boot启动项Config创建连接
+```
+    @Bean(name = "localSource")
+    @ConfigurationProperties(prefix = "c3p0")
+    public DataSource mysql127Source(){
+        return DataSourceBuilder.create().type(ComboPooledDataSource.class).build();
+    }
+
+    @Bean(name = "localTemplate")
+    public JdbcTemplate mysql127Template(@Qualifier("localSource") DataSource source){
+        return new JdbcTemplate(source);
+    }
+```
+
+## lesson3

@@ -1,5 +1,6 @@
 package com.steam.lesson2;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,6 +46,16 @@ public class Lesson2Application {
         return new JdbcTemplate(dataSource);
     }
 
+    @Bean(name = "localSource")
+    @ConfigurationProperties(prefix = "c3p0")
+    public DataSource mysql127Source(){
+        return DataSourceBuilder.create().type(ComboPooledDataSource.class).build();
+    }
+
+    @Bean(name = "localTemplate")
+    public JdbcTemplate mysql127Template(@Qualifier("localSource") DataSource source){
+        return new JdbcTemplate(source);
+    }
     public static void main(String[] args) {
         SpringApplication.run(Lesson2Application.class, args);
     }
