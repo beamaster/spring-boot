@@ -13,7 +13,7 @@ public class Lesson1Application {
 
     @RequestMapping("/")
     String index() {
-        return "Hello, Spring Boot"+ new Date();
+        return "Hello, Spring Boot" + new Date();
     }
 
     public static void main(String[] args) {
