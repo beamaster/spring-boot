@@ -2,11 +2,11 @@
 > start a new journey
 
 ## lesson1
-+ 初始化框架
-+ 第一个web应用
+### 1.1 初始化框架
+### 1.2 第一个web应用
 
 ## lesson2
-### maven repository--阿里镜像仓库配置
+### 2.1 maven repository--阿里镜像仓库配置
 - 第一步:修改maven根目录下的conf文件夹中的setting.xml文件，内容如下：
 ```xml
 <mirrors>
@@ -34,11 +34,11 @@
         </repository>  
 </repositories>  
 ```
-### 多数据源配置
+### 2.2 多数据源配置
 - 1.在application.properties配置
 - 2.在启动程序配置
 
-### 配置文件加密
+### 2.3 配置文件加密
 > [jasypt方案](https://github.com/ulisesbocchio/jasypt-spring-boot)
 
 1.maven依赖
@@ -96,7 +96,7 @@ java -jar -Djasypt.encryptor.password=encrypt-code projectName-0.0.1-SNAPSHOT.wa
 | jasypt.encryptor.stringOutputType | False |  base64  |
 | jasypt.encryptor.proxyPropertySources | False |  false  |
 
-### c3p0配置数据库连接
+### 2.4 c3p0配置数据库连接
 1. `application.properties` 添加配置
 ```
 c3p0.jdbcUrl=jdbc:mysql://127.0.0.1:3307/shopxx?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
