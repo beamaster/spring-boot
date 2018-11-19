@@ -58,5 +58,7 @@ public class Lesson2Application {
     }
     public static void main(String[] args) {
         SpringApplication.run(Lesson2Application.class, args);
+        String path1 = Lesson2Application.class.getResource("/static/file/201117.xls").getFile();
+        System.out.println(",,,,"+path1);
     }
 }

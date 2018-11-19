@@ -1,5 +1,8 @@
 package com.steam.lesson2;
 
+import com.steam.lesson2.model.ClientPowerModel;
+import com.steam.lesson2.service.CommonService;
+import com.steam.lesson2.util.ExcelUtil;
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.Assert;
 import org.junit.Test;
@@ -7,9 +10,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +31,9 @@ public class Lesson2ApplicationTests {
     @Autowired
     @Qualifier("localTemplate")
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    CommonService commonService;
 
     @Test
     public void encryptProperties() {
@@ -53,6 +64,30 @@ public class Lesson2ApplicationTests {
                 address = map.get("full_name").toString();
                 System.out.println(addressName+":::" + address);
             }
+        }
+    }
+
+    @Test
+    public void avoidInsertTest() {
+
+        ClassPathResource p1 = new ClassPathResource("application.properties");
+
+        ClassPathResource p2 = new ClassPathResource("static/file/201117.xls");
+
+        String path = "";
+        try {
+            System.out.println("p1:"+ p1.getFile().length());
+            System.out.println("p2:"+ p2.getFile().length());
+            path   = ResourceUtils.getFile("classpath:static/file/201117.xls").getPath();
+            System.out.println(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<ClientPowerModel> list = ExcelUtil.readExcelAsModel(path,0,0,1);
+        if(list.size() >0){
+            commonService.avoidInesert(list);
         }
     }
 
