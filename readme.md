@@ -1,11 +1,11 @@
 # spring-boot learn notes
 > start a new journey
 
-## lesson1
+## 1.lesson1
 ### 1.1 初始化框架
 ### 1.2 第一个web应用
 
-## lesson2
+## 2.lesson2
 ### 2.1 maven repository--阿里镜像仓库配置
 - 第一步:修改maven根目录下的conf文件夹中的setting.xml文件，内容如下：
 ```xml
@@ -127,5 +127,61 @@ c3p0.driverClass=com.mysql.jdbc.Driver
         return new JdbcTemplate(source);
     }
 ```
+### 2.5 mysql避免重复插入
+>会有一个详细的、逐步叠加的工具util包
+- 2.5.1 读取简单的Excel(1997-2003)
+```
+ExcelUtil.readExcelAsModel(args...)
 
-## lesson3
+```
+- 2.5.2 避免重复插入sql语句
+```sql
+insert into se_client_power
+(host_name,client_id,client_name,data_time,charge_power,discharge_power)
+select ?,?,?,?,?,? from dual where not exists(
+select host_name,client_id,client_name,data_time,charge_power,discharge_power from se_client_power where client_id=? and data_time=?);
+
+```
+
+- 2.5.3 service方法
+```Java
+List<Object[]> params = new ArrayList<>();
+        for (ClientPowerModel cpModel : cpModelList){
+            params.add(new Object[]{
+                    cpModel.getHostName(),
+                    cpModel.getClientId(),
+                    cpModel.getClientName(),
+                    cpModel.getDataTime(),
+                    cpModel.getChargePower(),
+                    cpModel.getDiscChargePower(),
+                    cpModel.getClientId(),cpModel.getDataTime()//最后两个问号不能漏掉
+            });
+        }
+        jdbcTemplate.batchUpdate(sql,params);
+``` 
+
+- 2.5.4 测试方法
+```java
+@Scheduled(fixedRate = 10000L)
+    public void execTask(){
+        String path = "";
+        try {
+            path   = ResourceUtils.getFile("classpath:static/file/201117.xls").getPath();
+            System.out.println(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        List<ClientPowerModel> list = ExcelUtil.readExcelAsModel(path,0,0,1);
+        if(list.size() >0){
+            commonService.avoidInsert(list);
+        }
+    }
+```
+
+- 2.5.5 数据库和测试文件准备
+> 所有配置文件会自动加载到target对应资源目录下
+
+### 2.6 获取classpath的三种方式
+
+
+## 3.lesson3
