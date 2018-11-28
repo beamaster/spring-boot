@@ -14,7 +14,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -77,7 +76,9 @@ public class Lesson2ApplicationTests {
         String path = "";
         try {
             System.out.println("p1:"+ p1.getFile().length());
+            System.out.println("p1:"+ p1.getFile().getPath());
             System.out.println("p2:"+ p2.getFile().length());
+            System.out.println("p2:"+ p2.getFile().getPath());
             path   = ResourceUtils.getFile("classpath:static/file/201117.xls").getPath();
             System.out.println(path);
         } catch (FileNotFoundException e) {
@@ -87,7 +88,7 @@ public class Lesson2ApplicationTests {
         }
         List<ClientPowerModel> list = ExcelUtil.readExcelAsModel(path,0,0,1);
         if(list.size() >0){
-            commonService.avoidInesert(list);
+            commonService.avoidInsert(list);
         }
     }
 

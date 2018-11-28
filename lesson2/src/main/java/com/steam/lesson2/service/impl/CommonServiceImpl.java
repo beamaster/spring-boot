@@ -24,11 +24,12 @@ public class CommonServiceImpl implements CommonService {
      * @param cpModelList
      */
     @Override
-    public void avoidInesert(List<ClientPowerModel> cpModelList){
+    public void avoidInsert(List<ClientPowerModel> cpModelList){
         String sql = "insert into se_client_power\n" +
                 "(host_name,client_id,client_name,data_time,charge_power,discharge_power)\n" +
                 "select ?,?,?,?,?,? from dual where not exists(\n" +
-                "select host_name,client_id,client_name,data_time,charge_power,discharge_power from se_client_power where client_id=? and data_time=?);\n";
+                "select host_name,client_id,client_name,data_time,charge_power,discharge_power " +
+                "from se_client_power where client_id=? and data_time=?);\n";
         List<Object[]> params = new ArrayList<>();
         for (ClientPowerModel cpModel : cpModelList){
             params.add(new Object[]{

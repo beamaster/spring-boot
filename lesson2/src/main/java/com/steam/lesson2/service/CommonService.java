@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CommonService {
 
-    void avoidInesert(List<ClientPowerModel> cpModelList);
+    void avoidInsert(List<ClientPowerModel> cpModelList);
 }
