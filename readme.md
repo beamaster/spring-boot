@@ -182,6 +182,20 @@ List<Object[]> params = new ArrayList<>();
 > 所有配置文件会自动加载到target对应资源目录下
 
 ### 2.6 获取classpath的三种方式
+- 2.6.1
+```java
+ClassPathResource p1 = new ClassPathResource("application.properties");
+p1.getFile().getPath()
 
+```
+- 2.6.2
+```java
+ResourceUtils.getFile("classpath:static/file/201117.xls").getPath();
+```
+- 2.6.3
+```java
+String path = Lesson2Application.class.getResource("/static/file/201117.xls").getFile();
 
+> Lesson2Application是启动类
+```
 ## 3.lesson3
